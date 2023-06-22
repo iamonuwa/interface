@@ -1,6 +1,6 @@
 import { fetchAPI } from '@/libs/fetch';
 import { BigNumberish } from '@ethersproject/bignumber';
-import { EtherscanProvider, JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
+import { EtherscanProvider, TransactionResponse } from '@ethersproject/providers';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
