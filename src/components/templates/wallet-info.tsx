@@ -14,9 +14,9 @@ const WalletInfo = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-10 p-4">
+    <div className="flex flex-col items-center space-y-4 p-4">
       <form
-        className="flex flex-col md:flex-row md:space-x-2 w-full space-y-2 md:space-y-0"
+        className="flex flex-col md:flex-row justify-center md:space-x-2 w-full space-y-2 md:space-y-0"
         onSubmit={handleSubmit(getWalletInformation)}
       >
         <input
@@ -34,14 +34,16 @@ const WalletInfo = () => {
           Load Wallet Information
         </button>
       </form>
-      <h1 className="text-4xl font-semibold leading-6 text-white dark:text-gray-900">
-        {account}
-      </h1>
-      {account && (
-        <p className="text-xl text-gray-400 dark:text-gray-400">
-          Wallet Balance: {formatEther(balance)} ETH (0.00 USD)
-        </p>
-      )}
+      <div className="flex flex-col items-center justify-center px-4 w-full">
+        <h1 className="text-sm md:text-2xl font-semibold leading-6 text-white dark:text-gray-900">
+          {account}
+        </h1>
+        {account && (
+          <p className="text-sm md:text-xl text-gray-400 dark:text-gray-400">
+            Wallet Balance: {formatEther(balance)} ETH
+          </p>
+        )}
+      </div>
     </div>
   );
 };

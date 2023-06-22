@@ -1,4 +1,3 @@
-import { fetchAPI } from '@/libs/fetch';
 import { BigNumberish } from '@ethersproject/bignumber';
 import { EtherscanProvider, TransactionResponse } from '@ethersproject/providers';
 import { create } from 'zustand';
