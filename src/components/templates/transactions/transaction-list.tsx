@@ -5,6 +5,7 @@ import { TransactionResponse } from "@ethersproject/providers";
 import { formatEther } from "@ethersproject/units";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
+import Link from "next/link";
 
 const TransactionList = () => {
   const { transactions } = useWallet();
@@ -15,46 +16,41 @@ const TransactionList = () => {
         header: "Block Number",
         cell: (row) => row.renderValue(),
         accessorKey: "blockNumber",
+        enableSorting: false,
       },
       {
         header: "From",
-        cell: (row) => row.renderValue(),
+        cell: (row) => shortenHex(row.renderValue() as any, 6),
         accessorKey: "from",
+        enableSorting: false,
       },
       {
         header: "To",
-        cell: (row) => shortenHex(row.renderValue() as any, 10),
+        cell: (row) => shortenHex(row.renderValue() as any, 6),
         accessorKey: "to",
+        enableSorting: false,
       },
       {
         header: "Amount",
         cell: (row) => formatEther((row.renderValue() as any) || "0") + "ETH",
         accessorKey: "value",
         enableSorting: true,
-        sortingFn: (a, b) => {
-          const aVal = parseFloat(a.id) || 0;
-          const bVal = parseFloat(b.id) || 0;
-          return aVal - bVal;
-        },
       },
       {
         header: "Timestamp",
-        cell: (row) => row.renderValue(),
+        cell: (row) =>
+          new Date((Number(row.renderValue()) * 1000) as any).toLocaleString(),
         accessorKey: "timestamp",
         enableSorting: true,
-        sortingFn: (a, b) => {
-          const aVal = parseFloat(a.id) || 0;
-          const bVal = parseFloat(b.id) || 0;
-          return aVal - bVal;
-        },
       },
       {
         header: "Link",
         accessorKey: "hash",
+        enableSorting: false,
         // @ts-ignore
         cell: (row) =>
           row.getValue() && (
-            <a href={`/transactions/${row.getValue()}`}>See details</a>
+            <Link href={`/transactions/${row.getValue()}`}>See details</Link>
           ),
       },
     ],
