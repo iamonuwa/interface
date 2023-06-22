@@ -1,5 +1,7 @@
 import Table from "@/components/atoms/table";
-import { ITransaction, useWallet } from "@/store/wallet";
+import { useWallet } from "@/store/wallet";
+import { shortenHex } from "@/utils";
+import { TransactionResponse } from "@ethersproject/providers";
 import { formatEther } from "@ethersproject/units";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
@@ -7,7 +9,9 @@ import { useMemo } from "react";
 const TransactionList = () => {
   const { transactions } = useWallet();
 
-  const columns = useMemo<ColumnDef<ITransaction>[]>(
+  console.log(transactions);
+
+  const columns = useMemo<ColumnDef<TransactionResponse>[]>(
     () => [
       {
         header: "Block Number",
@@ -21,18 +25,30 @@ const TransactionList = () => {
       },
       {
         header: "To",
-        cell: (row) => row.renderValue(),
+        cell: (row) => shortenHex(row.renderValue() as any, 10),
         accessorKey: "to",
       },
       {
         header: "Amount",
         cell: (row) => formatEther((row.renderValue() as any) || "0") + "ETH",
         accessorKey: "value",
+        enableSorting: true,
+        sortingFn: (a, b) => {
+          const aVal = parseFloat(a.id) || 0;
+          const bVal = parseFloat(b.id) || 0;
+          return aVal - bVal;
+        },
       },
       {
-        header: "Transaction timestamp",
+        header: "Timestamp",
         cell: (row) => row.renderValue(),
-        accessorKey: "timeStamp",
+        accessorKey: "timestamp",
+        enableSorting: true,
+        sortingFn: (a, b) => {
+          const aVal = parseFloat(a.id) || 0;
+          const bVal = parseFloat(b.id) || 0;
+          return aVal - bVal;
+        },
       },
       {
         header: "Link",
@@ -49,7 +65,13 @@ const TransactionList = () => {
 
   return (
     <>
-      <Table columns={columns} data={transactions} />
+      {transactions.length > 0 ? (
+        <Table columns={columns} data={transactions} />
+      ) : (
+        <p className="text-base text-white text-center">
+          Enter an address to get information about the wallet
+        </p>
+      )}
     </>
   );
 };

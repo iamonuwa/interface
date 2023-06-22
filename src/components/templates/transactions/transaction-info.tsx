@@ -1,4 +1,3 @@
-import Container from "@/components/atoms/container";
 import { useWallet } from "@/store/wallet";
 import { TransactionResponse } from "@ethersproject/providers";
 import { formatEther } from "@ethersproject/units";
@@ -8,26 +7,18 @@ interface TransactionInfoProps {}
 
 const TransactionInfo: FC<TransactionInfoProps> = () => {
   const { transaction } = useWallet();
+  if (!transaction) return null;
   const {
     chainId,
     confirmations,
-    data,
     from,
-    gasLimit,
     hash,
-    nonce,
     value,
-    wait,
-    accessList,
-    blockHash,
     blockNumber,
     gasPrice,
-    maxFeePerGas,
-    maxPriorityFeePerGas,
     timestamp,
     to,
-    type,
-  } = transaction as TransactionResponse;
+  } = transaction as unknown as TransactionResponse;
   return (
     <>
       <div className="flex flex-col space-y-4">
@@ -83,8 +74,17 @@ const TransactionInfo: FC<TransactionInfoProps> = () => {
           </p>
         </div>
 
+        <div className="flex items-center space-x-4">
+          <h4 className="text-xl text-gray-400 dark:text-gray-400">Gas Used</h4>
+          <p className="text-xl text-gray-400 dark:text-gray-400">
+            {gasPrice?.toString()}
+          </p>
+        </div>
+
         <a
           className="text-xl text-gray-400 dark:text-gray-400 hover:underline"
+          target="_blank"
+          rel="noreferrer noopener"
           href={`https://etherscan.io/tx/${hash}`}
         >
           See on Etherscan

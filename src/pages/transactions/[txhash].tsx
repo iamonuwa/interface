@@ -6,12 +6,12 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 export default function TransactionDetails() {
-  const { loadTransaction } = useWallet();
+  const { fetchTransaction } = useWallet();
   const router = useRouter();
 
   useEffect(() => {
-    loadTransaction(router.query.txhash as string);
-  }, [loadTransaction, router.query.txhash]);
+    fetchTransaction(router.query.txhash as string);
+  }, [fetchTransaction, router.query.txhash]);
 
   return (
     <Layout>

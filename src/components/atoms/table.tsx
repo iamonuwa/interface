@@ -5,7 +5,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import { on } from "events";
 
 interface TableProps<T extends object> extends ComponentPropsWithRef<"table"> {
   data: T[];
@@ -37,12 +36,25 @@ const Table = <T extends object>({ data, columns, ...rest }: TableProps<T>) => {
                 className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-0"
                 key={header.id}
               >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
+                {header.isPlaceholder ? null : (
+                  <div
+                    {...{
+                      className: header.column.getCanSort()
+                        ? "cursor-pointer select-none"
+                        : "",
+                      onClick: header.column.getToggleSortingHandler(),
+                    }}
+                  >
+                    {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
+                    {{
+                      asc: " 🔼",
+                      desc: " 🔽",
+                    }[header.column.getIsSorted() as string] ?? null}
+                  </div>
+                )}
               </th>
             ))}
           </tr>
